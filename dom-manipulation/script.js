@@ -37,3 +37,26 @@ addQuoteBtn.addEventListener('click', addQuote);
 
 // Display one quote on load
 showRandomQuote();
+// Load quotes from localStorage
+function loadQuotes() {
+  const storedQuotes = localStorage.getItem('quotes');
+  if (storedQuotes) quotes = JSON.parse(storedQuotes);
+}
+
+// Save quotes to localStorage
+function saveQuotes() {
+  localStorage.setItem('quotes', JSON.stringify(quotes));
+}
+
+function addQuote() {
+  const text = document.getElementById('newQuoteText').value.trim();
+  const category = document.getElementById('newQuoteCategory').value.trim();
+
+  if (!text || !category) return alert("Please fill both fields!");
+
+  quotes.push({ text, category });
+  saveQuotes();  // persist change
+  document.getElementById('newQuoteText').value = '';
+  document.getElementById('newQuoteCategory').value = '';
+  alert("Quote added and saved!");
+}
