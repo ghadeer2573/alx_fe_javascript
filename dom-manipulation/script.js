@@ -83,4 +83,35 @@ function importFromJsonFile(event) {
   };
   fileReader.readAsText(event.target.files[0]);
 }
+const categoryFilter = document.getElementById('categoryFilter');
+
+function populateCategories() {
+  const categories = [...new Set(quotes.map(q => q.category))];
+  categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+  categories.forEach(cat => {
+    const option = document.createElement('option');
+    option.value = cat;
+    option.textContent = cat;
+    categoryFilter.appendChild(option);
+  });
+}
+
+function filterQuotes() {
+  const selected = categoryFilter.value;
+  localStorage.setItem('selectedCategory', selected);
+
+  const filtered = selected === 'all' ? quotes : quotes.filter(q => q.category === selected);
+  const random = Math.floor(Math.random() * filtered.length);
+  const quote = filtered[random];
+  quoteDisplay.textContent = `"${quote.text}" — ${quote.category}`;
+}
+
+function restoreFilter() {
+  const saved = localStorage.getItem('selectedCategory') || 'all';
+  categoryFilter.value = saved;
+  filterQuotes();
+}
+
+populateCategories();
+restoreFilter();
 
